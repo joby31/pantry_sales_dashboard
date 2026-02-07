@@ -1,0 +1,40 @@
+--- All_Product_Quantity_Sales.xlsx ---
+Columns: ['Product_Name', 'Quantity_Sold']
+                                          Product_Name  Quantity_Sold
+0                      Natholi / India Anchovy(Medium)             63
+1                       Natholi / India Anchovy(Small)             11
+2           Nadan Karimeen / Kerala Pearl Spot(Medium)              1
+3            Nadan Karimeen / Kerala Pearl Spot(Small)              7
+4  Nadan Karimeen / Kerala Pearl Spot(Medium Skinless)              6
+
+==============================
+--- Daily_Customer_Retention_Nov_2025 (2).xlsx ---
+Columns: ['Date', 'Total Customers', 'Returning Customers', 'Retention %']
+         Date  Total Customers  Returning Customers  Retention %
+0  2025-11-01               11                    0          0.0
+1  2025-11-02                1                    0          0.0
+2  2025-11-03                5                    1         20.0
+3  2025-11-04                5                    1         20.0
+4  2025-11-05                8                    1         12.5
+
+==============================
+--- Daily_New_Old_Customers_Nov_2025 (2).xlsx ---
+Columns: ['Date', 'Total Customers', 'New Customers', 'Old Customers']
+         Date  Total Customers  New Customers  Old Customers
+0  2025-11-01               11             11              0
+1  2025-11-02                1              1              0
+2  2025-11-03                5              4              1
+3  2025-11-04                5              4              1
+4  2025-11-05                8              7              1
+
+==============================
+--- jan4 (1).xlsx ---
+Columns: ['Unnamed: 0']
+            Unnamed: 0
+0                  NaN
+1           Row Labels
+2           Abdhula Pm
+3  2025-11-12 00:00:00
+4          Abin wilson
+
+==============================

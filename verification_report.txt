@@ -1,0 +1,18 @@
+--- Verifying November 2025 ---
+File found: november_data/jan4 (1).xlsx
+Calculated Total Customers: 161
+Daily Trend Head:
+        Date  Total Customers
+0 2025-11-01               11
+1 2025-11-02                1
+2 2025-11-03                5
+3 2025-11-04                5
+4 2025-11-05                8
+
+--- Verifying December 2025 ---
+KPIs Loaded:
+{'Total Customers': 510.0, 'New Customers': 320.0, 'Return_customer': 105.0, 'Gross Profit': 326606.0, 'Average Retention (%)': 11.22}
+Daily Trend Rows: 31
+Retention Rows: 31
+Profit Rows: 31
+Product Rows: 80
