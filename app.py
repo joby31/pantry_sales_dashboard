@@ -153,6 +153,8 @@ elif month == "January 2026":
         # Convert to numeric, coerce errors, drop na
         avg_ret = pd.to_numeric(retention_df['Retention %'], errors='coerce').mean()
         kpi_data["Retention %"] = avg_ret
+        # Rename for chart consistency
+        retention_df = retention_df.rename(columns={'Retention %': 'Daily Retention %'})
 
     # 4. No Gross Profit File
 
