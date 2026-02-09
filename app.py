@@ -174,10 +174,10 @@ st.title(f"🥫 Pantry Performance Dashboard — {month}")
 
 # Display KPIs
 if show_kpi and kpi_data:
-    k1, k2, k3, k4, k5, k6 = st.columns(6)
+    k1, k2, k4, k5, k6 = st.columns(5)
     k1.metric("👥 Total Customers", kpi_data.get("Total Customers", 0))
     k2.metric("🆕 New Customers", kpi_data.get("New Customers", "-"))
-    k3.metric("♻️ Old Customers", kpi_data.get("Old Customers", "-"))
+    # k3 (Old Customers) removed as per request
     k4.metric("🔁 Return Customers", kpi_data.get("Return Customers", "-"))
     
     gp = kpi_data.get("Gross Profit", 0)
@@ -224,8 +224,9 @@ if show_charts:
     with c3:
         st.subheader("💰 Gross Profit Trend")
         if not profit_df.empty:
-            fig3 = px.bar(profit_df, x="Date", y="Gross Profit", title="Daily Gross Profit")
-            fig3.update_traces(marker_color="green")
+            # Changed to line graph as requested
+            fig3 = px.line(profit_df, x="Date", y="Gross Profit", markers=True, title="Daily Gross Profit Trend")
+            fig3.update_traces(line_color="green")
             st.plotly_chart(fig3, use_container_width=True)
         else:
             st.info("Profit data not available.")
