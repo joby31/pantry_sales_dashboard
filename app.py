@@ -156,7 +156,19 @@ elif month == "January 2026":
         # Rename for chart consistency
         retention_df = retention_df.rename(columns={'Retention %': 'Daily Retention %'})
 
-    # 4. No Gross Profit File
+    # 4. Load Gross Profit Data
+    prof_file = f"{base_dir}/January_2026_Datewise_Data.xlsx"
+    profit_df = load_excel(prof_file)
+    
+    if not profit_df.empty:
+        # Standardize columns for visualization: 'Date', 'Gross Profit'
+        # File has 'Date', 'Amount'
+        if 'Amount' in profit_df.columns:
+            profit_df = profit_df.rename(columns={'Amount': 'Gross Profit'})
+            
+        # Calculate Total Gross Profit for KPI
+        if 'Gross Profit' in profit_df.columns:
+             kpi_data["Gross Profit"] = profit_df['Gross Profit'].sum()
 
     # 5. Load Products (ITEMS.xlsx)
     prod_file = f"{base_dir}/ITEMS.xlsx"
