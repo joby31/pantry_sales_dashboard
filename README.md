@@ -1,43 +1,43 @@
 # Pantry Business Dashboard
 
-A Streamlit-based dashboard for visualizing pantry business performance, including customer trends, retention rates, and product sales.
+A data visualization tool for tracking pantry business performance. This project serves as both a **Streamlit Dashboard** and a **Full-Stack Web App (React + FastAPI)**.
 
-## Features
+## 🚀 Quick Deployment
+Deploy the **Streamlit Version** (easiest):
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/)
 
-- **Monthly Filtering**: View data for November 2025, December 2025, and January 2026.
-- **KPI Cards**: Track Total Customers, New vs Old, Return Customers, Gross Profit, and Retention Rate.
-- **Interactive Charts**:
-    - Daily Customer Trends (Line Chart)
-    - Daily Retention Calculation (Line Chart)
-    - Gross Profit Trends (Bar Chart)
-    - Top Selling Products (Bar Chart)
+Deploy the **Backend API** (for Web App):
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
-## Data Sources
+---
 
-The dashboard reads data from Excel files stored in the repository:
-- `november_data/`
-- `december_data/`
-- `january/`
+## 🌟 Features
+- **Monthly Analysis**: November 2025 - January 2026.
+- **Key Metrics**: Customer Retention, New vs Old, Gross Profit.
+- **Visuals**: Interactive Line Charts, Pie Charts, and Bar Graphs.
 
-## Local Setup
+## 🛠️ Project Structure
+- `app.py`: Original Streamlit application.
+- `web_app/`:
+    - `backend/`: FastAPI Python Server.
+    - `frontend/`: React + Vite Application.
 
-1.  **Clone the repository**:
-    ```bash
-    git clone <your-repo-url>
-    cd pantry-dashboard
-    ```
+## 💻 Local Setup
 
-2.  **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Option 1: Run Streamlit App
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-3.  **Run the dashboard**:
-    ```bash
-    streamlit run app.py
-    ```
+### Option 2: Run Full Web App
+Double-click **`run_web_app.bat`** on Windows.
+*Or manually:*
+1. **Backend**: `cd web_app/backend && uvicorn main:app --reload`
+2. **Frontend**: `cd web_app/frontend && npm run dev`
 
-## Deployment
+## 🌐 Full Web App Deployment
+- **Frontend**: Hosted on [Firebase Hosting](https://firebase.google.com/docs/hosting).
+- **Backend**: Hosted on [Render](https://render.com/).
 
-This app is designed to be deployed on **Streamlit Community Cloud**.
-See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for full instructions.
+See [DEPLOYMENT_GUIDE_WEB_APP.md](DEPLOYMENT_GUIDE_WEB_APP.md) for details.
