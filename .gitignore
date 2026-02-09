@@ -1,0 +1,19 @@
+# Ignore virtual environment and cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Ignore git/system files
+.git/
+.vscode/
+.idea/
+
+# DATA FOLDERS -- COMMENTED OUT TO ENSURE THEY ARE COMMITTED
+# Since the app functionality depends on these being present, do NOT ignore them.
+# if they were large/confidential, we'd use Git LFS or external storage, but for this task:
+# Temporary verification files
+*_inspection*.txt
+verify_*.py
+verification_report.txt

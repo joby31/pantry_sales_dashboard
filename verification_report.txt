@@ -1,18 +1,18 @@
---- Verifying November 2025 ---
-File found: november_data/jan4 (1).xlsx
-Calculated Total Customers: 161
-Daily Trend Head:
-        Date  Total Customers
-0 2025-11-01               11
-1 2025-11-02                1
-2 2025-11-03                5
-3 2025-11-04                5
-4 2025-11-05                8
-
---- Verifying December 2025 ---
-KPIs Loaded:
-{'Total Customers': 510.0, 'New Customers': 320.0, 'Return_customer': 105.0, 'Gross Profit': 326606.0, 'Average Retention (%)': 11.22}
-Daily Trend Rows: 31
-Retention Rows: 31
-Profit Rows: 31
-Product Rows: 80
+--- Testing January 2026 Data Loading ---
+Loading january/new_old.xlsx...
+KPI Data Loaded:
+{'Total Customers': 459, 'New Customers': 301, 'Old Customers': 157, 'Return Customers': 157, 'Gross Profit': 0, 'Retention %': 0.0}
+Loading january/January_2026_Day_Wise_Customer_Count.xlsx...
+Daily Trend Shape: (31, 2)
+         Date  Customer Count
+0  2026-01-01              17
+1  2026-01-02              29
+Loading january/Retention_data.xlsx...
+Calculated Average Retention: 8.277666666666667
+Retention DF Shape: (31, 4)
+Loading january/ITEMS.xlsx with header=2...
+Product DF Shape: (118, 2)
+Columns: ['Product_Name', 'Quantity_Sold']
+             Product_Name  Quantity_Sold
+0    Beef Cutlet (10 Nos)             10
+1  Beef Unnakkai (10 Nos)              1

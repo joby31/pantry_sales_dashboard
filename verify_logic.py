@@ -1,13 +1,8 @@
-
 import pandas as pd
 import os
-import sys
 
-# Redirect stdout to file
-sys.stdout = open("verification_report.txt", "w", encoding="utf-8")
-
+# Mocking the load_excel function from app.py
 def load_excel(path, **kwargs):
-    """Safe load of excel file"""
     if os.path.exists(path):
         try:
             return pd.read_excel(path, **kwargs)
@@ -16,74 +11,64 @@ def load_excel(path, **kwargs):
             return pd.DataFrame()
     return pd.DataFrame()
 
-print("--- Verifying November 2025 ---")
-month = "November 2025"
-if month == "November 2025":
-    raw_file = "november_data/jan4 (1).xlsx"
-    if os.path.exists(raw_file):
-        print(f"File found: {raw_file}")
-        raw_df = load_excel(raw_file, header=1)
-        if not raw_df.empty:
-            raw_series = raw_df.iloc[:,0]
-            dates = []
-            
-            for i in range(len(raw_series) - 1):
-                val = raw_series.iloc[i]
-                next_val = raw_series.iloc[i+1]
-                
-                # Check if next_val is a date
-                try:
-                    ts = pd.to_datetime(next_val, errors='coerce')
-                    if not pd.isna(ts):
-                        dates.append(ts)
-                except:
-                    pass
+# Simulating the logic for January 2026
+base_dir = "january"
+kpi_data = {}
 
-            if dates:
-                nov_daily_df = pd.DataFrame({'Date': dates})
-                # Count occurrences per date
-                daily_trend_df = nov_daily_df.groupby('Date').size().reset_index(name='Total Customers')
-                print(f"Calculated Total Customers: {len(dates)}")
-                print("Daily Trend Head:")
-                print(daily_trend_df.head().to_string())
-            else:
-                 print("No dates found in November file")
-        else:
-            print("File is empty or failed to load")
+with open('verification_report.txt', 'w', encoding='utf-8') as f:
+    f.write("--- Testing January 2026 Data Loading ---\n")
+
+    # 1. Load KPI Data (from new_old.xlsx)
+    kpi_file = f"{base_dir}/new_old.xlsx"
+    f.write(f"Loading {kpi_file}...\n")
+    kpi_df = load_excel(kpi_file, header=1) # categorization is in row 1 (0-indexed)
+
+    if not kpi_df.empty and 'categorize' in kpi_df.columns:
+        total_customers = len(kpi_df)
+        new_customers = len(kpi_df[kpi_df['categorize'].astype(str).str.lower() == 'new'])
+        old_customers = len(kpi_df[kpi_df['categorize'].astype(str).str.lower() == 'old'])
+        
+        kpi_data = {
+            "Total Customers": total_customers,
+            "New Customers": new_customers,
+            "Old Customers": old_customers,
+            "Return Customers": old_customers,
+            "Gross Profit": 0,
+            "Retention %": 0.0
+        }
+        f.write("KPI Data Loaded:\n")
+        f.write(str(kpi_data) + "\n")
     else:
-        print(f"File NOT found: {raw_file}")
+        f.write("Failed to load KPI data or 'categorize' column missing.\n")
 
-print("\n--- Verifying December 2025 ---")
-month = "December 2025"
-if month == "December 2025":
-    base_dir = "december_data"
-    
-    # KPI Data
-    kpi_file = f"{base_dir}/Pantry_December_2025_Correct_KPI_Data (1).xlsx"
-    kpi_df = load_excel(kpi_file)
-    if not kpi_df.empty:
-        kpi_df["Metric"] = kpi_df["Metric"].astype(str).str.strip()
-        kpi_map = dict(zip(kpi_df["Metric"], kpi_df["Value"]))
-        print("KPIs Loaded:")
-        print(kpi_map)
-    else:
-        print("KPI File failed")
-
-    # Dimensions
-    daily_file = f"{base_dir}/Dec_2025_Daily_Pivot_Count.xlsx"
+    # 2. Load Daily Customer Trend
+    daily_file = f"{base_dir}/January_2026_Day_Wise_Customer_Count.xlsx"
+    f.write(f"Loading {daily_file}...\n")
     daily_trend_df = load_excel(daily_file)
-    print(f"Daily Trend Rows: {len(daily_trend_df)}")
-    
-    ret_file = f"{base_dir}/Dec_2025_Daily_Retention.xlsx"
+    f.write(f"Daily Trend Shape: {daily_trend_df.shape}\n")
+    f.write(daily_trend_df.head(2).to_string() + "\n")
+
+    # 3. Load Retention Data
+    ret_file = f"{base_dir}/Retention_data.xlsx"
+    f.write(f"Loading {ret_file}...\n")
     retention_df = load_excel(ret_file)
-    print(f"Retention Rows: {len(retention_df)}")
-    
-    prof_file = f"{base_dir}/December_2025_Gross_Profit.xlsx"
-    profit_df = load_excel(prof_file)
-    print(f"Profit Rows: {len(profit_df)}")
+    if not retention_df.empty and 'Retention %' in retention_df.columns:
+        avg_ret = pd.to_numeric(retention_df['Retention %'], errors='coerce').mean()
+        kpi_data["Retention %"] = avg_ret
+        f.write(f"Calculated Average Retention: {avg_ret}\n")
+    f.write(f"Retention DF Shape: {retention_df.shape}\n")
 
-    prod_file = f"{base_dir}/All_Product_Quantity_Sales.xlsx"
-    product_df = load_excel(prod_file)
-    print(f"Product Rows: {len(product_df)}")
-
-sys.stdout.close()
+    # 5. Load Products (ITEMS.xlsx)
+    prod_file = f"{base_dir}/ITEMS.xlsx"
+    f.write(f"Loading {prod_file} with header=2...\n")
+    product_df = load_excel(prod_file, header=2)
+    if not product_df.empty:
+        product_df = product_df.rename(columns={
+            'Row Labels': 'Product_Name', 
+            'Sum of QuantityInvoiced': 'Quantity_Sold'
+        })
+        f.write(f"Product DF Shape: {product_df.shape}\n")
+        f.write(f"Columns: {product_df.columns.tolist()}\n")
+        f.write(product_df.head(2).to_string() + "\n")
+    else:
+        f.write("Product DF is empty.\n")

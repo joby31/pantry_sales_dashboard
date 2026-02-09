@@ -7,7 +7,7 @@ import os
 st.set_page_config(page_title="Pantry Business Dashboard", layout="wide")
 
 # Valid months
-MONTHS = ["November 2025", "December 2025"]
+MONTHS = ["November 2025", "December 2025", "January 2026"]
 
 # Sidebar
 with st.sidebar:
@@ -32,9 +32,9 @@ def load_excel(path, **kwargs):
 # Data Loading Logic
 kpi_data = {}
 daily_trend_df = pd.DataFrame()
-retention_df = pd.DataFrame() # For December
+retention_df = pd.DataFrame() # For December/January
 profit_df = pd.DataFrame()    # For December
-product_df = pd.DataFrame()   # For December
+product_df = pd.DataFrame()   # For December/January
 
 if month == "November 2025":
     # November: Raw Data in 'november_data/jan4 (1).xlsx'
@@ -117,6 +117,56 @@ elif month == "December 2025":
     # 5. Load Products
     prod_file = f"{base_dir}/All_Product_Quantity_Sales.xlsx"
     product_df = load_excel(prod_file) # Cols: Product_Name, Quantity_Sold
+
+elif month == "January 2026":
+    # January: Data in 'january/'
+    base_dir = "january"
+    
+    # 1. Load KPI Data (from new_old.xlsx)
+    kpi_file = f"{base_dir}/new_old.xlsx"
+    kpi_df = load_excel(kpi_file, header=1) # categorization is in row 1 (0-indexed)
+    
+    if not kpi_df.empty and 'categorize' in kpi_df.columns:
+        total_customers = len(kpi_df)
+        new_customers = len(kpi_df[kpi_df['categorize'].astype(str).str.lower() == 'new'])
+        # "Old" covers both returning and old in this context, or we just map old -> old
+        old_customers = len(kpi_df[kpi_df['categorize'].astype(str).str.lower() == 'old'])
+        
+        kpi_data = {
+            "Total Customers": total_customers,
+            "New Customers": new_customers,
+            "Old Customers": old_customers,
+            "Return Customers": old_customers, # Assuming Old = Return for simplicity if not distinguished
+            "Gross Profit": 0,     # Not available
+            "Retention %": 0.0     # Will be calc from retention file if possible, else 0
+        }
+
+    # 2. Load Daily Customer Trend
+    daily_file = f"{base_dir}/January_2026_Day_Wise_Customer_Count.xlsx"
+    daily_trend_df = load_excel(daily_file)
+    
+    # 3. Load Retention Data
+    ret_file = f"{base_dir}/Retention_data.xlsx"
+    retention_df = load_excel(ret_file)
+    # If retention_df has 'Retention %' column, we can calculate average for KPI
+    if not retention_df.empty and 'Retention %' in retention_df.columns:
+        # Convert to numeric, coerce errors, drop na
+        avg_ret = pd.to_numeric(retention_df['Retention %'], errors='coerce').mean()
+        kpi_data["Retention %"] = avg_ret
+
+    # 4. No Gross Profit File
+
+    # 5. Load Products (ITEMS.xlsx)
+    prod_file = f"{base_dir}/ITEMS.xlsx"
+    # Header is on row 2 (index 2), so header=2
+    product_df = load_excel(prod_file, header=2)
+    # Rename columns to match December logic if needed: 'Row Labels' -> 'Product_Name', 'Sum of QuantityInvoiced' -> 'Quantity_Sold'
+    if not product_df.empty:
+        product_df = product_df.rename(columns={
+            'Row Labels': 'Product_Name', 
+            'Sum of QuantityInvoiced': 'Quantity_Sold'
+        })
+
 
 st.title(f"🥫 Pantry Performance Dashboard — {month}")
 

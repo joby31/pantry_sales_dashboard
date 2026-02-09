@@ -1,0 +1,15 @@
+new_old.xlsx columns: ['customer_name', 'customer_id', 'count', 'categorize']
+Unique categories: ['new' 'old' nan]
+Counts:
+categorize
+new    301
+old    157
+Name: count, dtype: int64
+
+ITEMS.xlsx columns: ['Unnamed: 0', 'Unnamed: 1']
+                            Unnamed: 0               Unnamed: 1
+0                           Row Labels  Sum of QuantityInvoiced
+1                 Beef Cutlet (10 Nos)                       10
+2               Beef Unnakkai (10 Nos)                        1
+3  Breaded Chicken Cheese Box (12 Nos)                        2
+4     Breaded Chicken Samoosa (10 Nos)                        4
